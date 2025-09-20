@@ -1,0 +1,83 @@
+CHECKPOINT 2 - Introdução Pandas
+Nicolas alves - 561692 Gustavo Henrique - 563874 Gustavo pereira - 563280 Pedro de Castro - 561825 Thiago Alemida - 565365
+
+#Primeiro - importar pandas e criar um dataframe
+import pandas as pd
+df = pd.read_csv('/content/household_power_consumption.txt', sep=';', na_values=['?']) 
+print("\n--- Começando Analise de dados ---")
+
+
+# segundo- analise exploratoria - shape, info , describe
+print("\n--- Análise Exploratória Inicial ---")
+print(f' O DataFrame possui {df.shape[0]} linhas e {df.shape[1]} dolunas')
+#informação
+print('\nInformações sobre o dataframe')
+df.info()
+#estatistica descitiva
+print('\nEstatistica descritiva')
+df.describe()
+
+
+#Terceiro - Identificar e tratar valores faltantes(isna, isnull)
+print('\n--- Identificar e tratar valores faltantes ---')
+print('\nValores falantes por coluna')
+print(df.isnull().sum())
+
+#converter todas as colunas do dataframe para valores numericos
+df.apply(pd.to_numeric, errors='coerce')
+print("\nLinhas com valores faltantes foram removidas.")
+print(f"Novo formato do DataFrame (linhas, colunas): {df.shape}")
+
+#Apos tratamento -  converte as colunas com dados 'object' em numéricas
+print("\nTipos de dados após o tratamento (confirmando que são numéricos):")
+df.info()
+
+
+# Quarta parte - Separar três colunas
+print('\n--- DataFrame com colunas especificas ---')
+colunas = ['Global_active_power', 'Global_intensity', 'Sub_metering_3']
+new_df = df[colunas].copy()
+
+print(new_df.head())
+
+
+# Quinta parte - media, mediana e desvio padrãio
+print("\n--- Calculando Métricas para o DataFrame Completo ---")
+# Exibir os resultados
+media = new_df.mean()
+mediana = new_df.median()
+desvio_padrao = new_df.std()
+
+print("\nMédia das colunas:")
+print(media)
+
+print("\nMediana das colunas:")
+print(mediana)
+
+print("\nDesvio Padrão das colunas:")
+print(desvio_padrao)
+
+
+
+
+#sexta - Gerar uma amostra com o método sample() e recalcular as métricas para a amostra
+print("\n--- Gerando Amostra e Recalculando Métricas ---")
+amostra_df = new_df.sample(frac=0.01, random_state=42)#O 'random_state' garante que a amostra seja a mesma toda vez que o código rodar
+
+print(f"\nAmostra gerada com {amostra_df.shape[0]} linhas.")
+
+# Recalcula as métricas para a amostra
+media_amostra = amostra_df.mean()
+mediana_amostra = amostra_df.median()
+desvio_padrao_amostra = amostra_df.std()
+
+# Exibe os resultados da amostra
+print("\nMédia da amostra:")
+print(media_amostra)
+
+print("\nMediana da amostra:")
+print(mediana_amostra)
+
+print("\nDesvio Padrão da amostra:")
+print(desvio_padrao_amostra)
+
